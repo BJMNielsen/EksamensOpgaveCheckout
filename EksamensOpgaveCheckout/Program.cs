@@ -7,8 +7,10 @@ Console.WriteLine("Hej");
 
 Scanner scanner = new Scanner();
 BilligPrisBeregner billigPrisBeregner = new BilligPrisBeregner();
+DyrPrisBeregner denDyre = new DyrPrisBeregner();
 
-scanner.ScannedItem += billigPrisBeregner.BeregnPris;
+scanner.ScannedItem += billigPrisBeregner.IndskannetVare;
+scanner.ScannedItem += denDyre.IndskannetVare;
 //scanner.ScannedItem += dyrePrisBeregner.BeregnPris
 
 scanner.Scan('A');

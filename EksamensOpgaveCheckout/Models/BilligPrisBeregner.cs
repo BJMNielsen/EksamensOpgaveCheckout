@@ -4,32 +4,9 @@ namespace EksamensOpgaveCheckout.Models;
 
 public class BilligPrisBeregner : PrisBeregner
 {
-    
-
-    private List<Vare> scannedeVarer = new List<Vare>();
-    // Antag dette er i PrisBeregner.cs eller i en af de specifikke prisberegnere
-
-    public void BeregnPris(Vare vare)
+    public override void Print(double total, List<GrupperedeVarer> varer)
     {
-        if (vare == null)
-        {
-            Console.WriteLine("Scanning færdig");
-            //færdig
-            // her skal dyre beregner være
-            BeregnPris(scannedeVarer);
-        }
-        else
-        {
-            scannedeVarer.Add(vare);
-        }
+        Console.WriteLine("Sum: " + total);
     }
     
-
-    public void BeregnPris(List<Vare> scannedeVarer)
-    {
-        BeregnPrisForVarer(this.scannedeVarer);
-
-        Console.WriteLine($"Samlet pris: {TotalPris} kr.");
-    }
-
 }

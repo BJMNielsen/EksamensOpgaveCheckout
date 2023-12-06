@@ -1,14 +1,37 @@
 using System.Collections;
+using System.Runtime.InteropServices;
 using EksamensOpgaveCheckout.Models;
 
 namespace EksamensOpgaveCheckout;
 
-public class PrisBeregner
+public abstract class PrisBeregner
 {
-    public double TotalPris;
     
-    public List<GrupperedeVarer> BeregnPrisForVarer(List<Vare> scannedeVarer)
+    private List<Vare> scannedeVarer = new List<Vare>();
+
+    
+    public void IndskannetVare(Vare vare)
     {
+        if (vare == null)
+        {
+            Console.WriteLine("Scanning færdig");
+            //færdig
+            // her skal dyre beregner være
+            (double total, List<GrupperedeVarer> result) = BeregnPrisForVarer(scannedeVarer);
+            Print(total, result);
+        }
+        else
+        {
+            scannedeVarer.Add(vare);
+        }
+    }
+    
+    public abstract void Print(double total, List<GrupperedeVarer> varer);
+
+
+    public (double totalPris, List<GrupperedeVarer>) BeregnPrisForVarer(List<Vare> scannedeVarer)
+    {
+        double TotalPris = 0;
         var grupperedeVarer = scannedeVarer.GroupBy(v => v.VareKode)
             .Select(group => new GrupperedeVarer
             {
@@ -31,9 +54,9 @@ public class PrisBeregner
             {
                 TotalPris += gruppe.Varer.Sum(v => v.Pris);
             }
-            Console.WriteLine($"Gruppe {gruppe.VareKode} {gruppe.Antal} {gruppe.Varer[0].Pris}");
+            
         }
-        Console.WriteLine($"TotalPris {TotalPris}");
-        return grupperedeVarer;
+        
+        return (TotalPris, grupperedeVarer);
     }
 }
