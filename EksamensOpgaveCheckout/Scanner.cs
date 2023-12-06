@@ -4,7 +4,6 @@ using Models;
 
 public class Scanner
 {
-    public List<Vare> ScannedeVarer = new();
 
     public delegate void ScannedItemEventHandler(Vare vare);
 
@@ -18,21 +17,22 @@ public class Scanner
 
         // Her tilføjer du logik til at skabe en Vare baseret på vareKode
         Vare vare = FindVareUdfraVarekode(vareKode);
+
+        // Udløs event med den skabte Vare
+        ScannedItem?.Invoke(vare);
+        
         if (vare != null)
         {
-            ScannedeVarer.Add(vare);
             // Her laver vi et check om den vare vi tilføjer er en vare der tilhøre VareGruppe 6, som er pantgruppen
             if (vare.VareGruppe == 6)
             {
                 // I så fald tilføjer vi bare en VareKode pant til listen.
                 Vare pant = FindVareUdfraVarekode('P');
-                ScannedeVarer.Add(pant);
+                ScannedItem?.Invoke(pant);
             }
         }
 
 
-        // Udløs event med den skabte Vare
-        ScannedItem?.Invoke(vare);
     }
 
 

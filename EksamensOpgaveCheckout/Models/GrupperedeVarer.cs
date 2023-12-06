@@ -19,5 +19,4 @@ public class GrupperedeVarer
 
     public List<Vare> Varer { get; set; }
     public int Antal { get; set; }
-    public double SamletPris { get; set; }
 }
