@@ -1,0 +1,44 @@
+
+Pant/P is a Product in an of itself.
+
+Varekoder: 
+Navn/pris/varekode/varegruppe
+
+A = Mælk, 10 kr, A, 1
+B = Toastbrød, 12 kr, B, 5
+C = Rugbrød, 14, C, 5
+D = Tyggegummi, 5, D, 5
+E = Cola, 7, E, 6
+F = Havregryn, 10, F, 5
+G = Øl, 8, G, 6
+H = Ris, 20, H, 5
+I = Pasta, 12, I, 5
+J = Tandpasta, 20, J, 8
+K = Hakkekød, 30, K, 2
+L = Svinekød, 20, L, 2
+M = Kylling, 25, M, 2
+N = Agurk, 9, N, 3
+O = Gulerod, 10, O, 3
+P = Pant, 1, P, 9
+Q = Kødpålæg, 15, Q, 2
+R = 3 x Kødpålæg(J), 40, R, 2
+S = Tandbørste, 20, S, 8
+T = 3 x Tandbørste(S), 55, T, 8
+U = Tun, 10, U, 2
+V = Mango, 8, V, 4
+X = Hytteost, 18, X, 1
+Y = Wokblanding, 12, Y, 3
+Z = Tomato, 3, Z, 3
+
+
+
+Varegrupper:
+1. Mejeri
+2. Kød
+3. Grøntsager
+4. Frugt
+5. Tørvare
+6. Pantvare
+7. Frysevare
+8. Pleje
+9. Andet
