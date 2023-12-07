@@ -6,32 +6,43 @@ namespace EksamensOpgaveCheckout;
 
 public abstract class PrisBeregner
 {
-    
-    private List<Vare> scannedeVarer = new List<Vare>();
+    // Vi har lagt vores scannedeVarer her
+    private List<Vare> _scannedeVarer = new List<Vare>();
 
-    
+    public abstract void Print(double total, List<GrupperedeVarer> varer);
+
+    public abstract void PrintSum(double total, Vare vare);
+
+    // Det her er vores "hoved" metode der køre når en vare skannes ind. Den kan bruges af både billig og dyr prisberegner.
     public void IndskannetVare(Vare vare)
     {
         if (vare == null)
         {
-            Console.WriteLine("Scanning færdig");
-            //færdig
-            // her skal dyre beregner være
-            (double total, List<GrupperedeVarer> result) = BeregnPrisForVarer(scannedeVarer);
-            Print(total, result);
+
+            // Hvis vare == Null dvs scanning er færdig, eller den får et forkert input
+            // Så beregner vi den totale pris for alle varene, og returner den med listen af varene i en tuple.
+            (double total, List<GrupperedeVarer> result) = BeregnPrisForVarer(_scannedeVarer);
+            // Her printer vi resultatet.
+            Print(total, result); //  Scanning færdig
         }
         else
         {
-            scannedeVarer.Add(vare);
+            // Vi adder varene til vores scannedeVarer liste
+            _scannedeVarer.Add(vare);
+            // Her giver vores BeregnPrisForVarer os en tuple tilbage, da vi gerne vil have både totalen og vores vare tilbage i en grupperet liste.
+            (double total, List<GrupperedeVarer> result) = BeregnPrisForVarer(_scannedeVarer);
+            PrintSum(total, vare);
         }
     }
+
     
-    public abstract void Print(double total, List<GrupperedeVarer> varer);
-
-
+    // returner en tuple.
+    // tager imod en liste af varer og beregner prisen.
     public (double totalPris, List<GrupperedeVarer>) BeregnPrisForVarer(List<Vare> scannedeVarer)
     {
-        double TotalPris = 0;
+        double totalPris = 0;
+        // Her gruppere vi varene baseret på deres varekode, som vi laver til hver gruppes "key".
+        // Hver gruppe indeholder også en liste af vare (Varer) med denne varekode, og til sidst et "Antal" 
         var grupperedeVarer = scannedeVarer.GroupBy(v => v.VareKode)
             .Select(group => new GrupperedeVarer
             {
@@ -42,21 +53,22 @@ public abstract class PrisBeregner
 
         foreach (var gruppe in grupperedeVarer)
         {
-            double samletPris = 0;
+            // Her har vi tilføjet logic der gør at der gælder at 3 tomater fås for 2's pris.
             if (gruppe.VareKode == 'Z') // Tomat-tilbuddet
             {
                 int antalTilNormalPris = gruppe.Antal % 3;
                 int antalTilTilbudspris = gruppe.Antal / 3 * 2;
-                double prisen = (antalTilNormalPris + antalTilTilbudspris) * gruppe.Varer[0].Pris;
-                TotalPris += prisen;
+                double prisen = (antalTilNormalPris + antalTilTilbudspris) * gruppe.EnkeltVarePris;
+                gruppe.SamletVarePris += prisen;
+                totalPris += prisen;
             }
             else
             {
-                TotalPris += gruppe.Varer.Sum(v => v.Pris);
+                gruppe.SamletVarePris += gruppe.EnkeltVarePris * gruppe.Antal;
+                totalPris += gruppe.Varer.Sum(v => v.Pris);
             }
-            
         }
-        
-        return (TotalPris, grupperedeVarer);
+
+        return (totalPris, grupperedeVarer);
     }
 }

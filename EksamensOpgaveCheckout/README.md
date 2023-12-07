@@ -1,4 +1,8 @@
 
+# Du starter applikationen og så kan du begynde at scanne dine varer en ad gangen.
+# Du kan indtaste fra A til Z og ønsker du at stoppe med at scanne så indtast W.
+# Og så bliver der udskrevet en kvittering i terminalen/konsollen.
+
 Beskrivelse:
 
 I kassen i supermarkedet bliver varer scannet ind og priserne bliver beregnet. Varerne scannes på baggrund af en EAN-kode, men i denne opgave kalder vi dem bare ved et bogstav ‘A’ til ‘Z’ for at gøre det nemmere.

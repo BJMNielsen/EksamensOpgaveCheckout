@@ -4,23 +4,24 @@ using Models;
 
 public class Scanner
 {
-
     public delegate void ScannedItemEventHandler(Vare vare);
 
     public event ScannedItemEventHandler ScannedItem;
 
+    public bool StillScanning = true;
 
     public void Scan(char vareKode)
     {
         // Simuler en delay
         Thread.Sleep(500);
 
-        // Her tilføjer du logik til at skabe en Vare baseret på vareKode
+        // Vi finder vores vare ud fra den varekode der er blevet indskannet.
         Vare vare = FindVareUdfraVarekode(vareKode);
 
-        // Udløs event med den skabte Vare
+        // Udløs event, dvs alle de metoder der er koblet på eventet, kører vi og giver "vare".
+        // Dvs vores metode "IndskannetVare(Vare vare)" i vores prisberegner køre med den "vare" vi passer i vores ScannedItem?.Invoke(vare); 
         ScannedItem?.Invoke(vare);
-        
+
         if (vare != null)
         {
             // Her laver vi et check om den vare vi tilføjer er en vare der tilhøre VareGruppe 6, som er pantgruppen
@@ -31,10 +32,38 @@ public class Scanner
                 ScannedItem?.Invoke(pant);
             }
         }
-
-
+        else
+        {
+            StillScanning = false;
+        }
     }
 
+    public static string FindVareGruppeNavnUdFraVareGruppeNr(int vareGruppeNr)
+    {
+        switch (vareGruppeNr)
+        {
+            case 1:
+                return "Mejeri";
+            case 2:
+                return "Kød";
+            case 3:
+                return "Grøntsager";
+            case 4:
+                return "Frugt";
+            case 5:
+                return "Tørvare";
+            case 6:
+                return "Pantvare";
+            case 7:
+                return "Frysevare";
+            case 8:
+                return "Pleje";
+            case 9:
+                return "Andet";
+            default:
+                return "Ukendt varegruppe"; // eller kast en exception, hvis det er mere passende
+        }
+    }
 
     public Vare FindVareUdfraVarekode(char vareKode)
     {
@@ -93,13 +122,13 @@ public class Scanner
                 vare = new Vare { Navn = "Kødpålæg", Pris = 15, VareKode = 'Q', VareGruppe = 2 };
                 break;
             case 'R':
-                vare = new Vare { Navn = "3 x Kødpålæg", Pris = 40, VareKode = 'R', VareGruppe = 2 };
+                vare = new Vare { Navn = "3 pakke Kødpålæg", Pris = 40, VareKode = 'R', VareGruppe = 2 };
                 break;
             case 'S':
                 vare = new Vare { Navn = "Tandbørste", Pris = 20, VareKode = 'S', VareGruppe = 8 };
                 break;
             case 'T':
-                vare = new Vare { Navn = "3 x Tandbørste", Pris = 55, VareKode = 'T', VareGruppe = 8 };
+                vare = new Vare { Navn = "3 pakke Tandbørste", Pris = 55, VareKode = 'T', VareGruppe = 8 };
                 break;
             case 'U':
                 vare = new Vare { Navn = "Tun", Pris = 10, VareKode = 'U', VareGruppe = 2 };
@@ -115,9 +144,6 @@ public class Scanner
                 break;
             case 'Z':
                 vare = new Vare { Navn = "Tomat", Pris = 3, VareKode = 'Z', VareGruppe = 3 };
-                break;
-            default:
-                Console.WriteLine("Ukendt varekode");
                 break;
         }
 

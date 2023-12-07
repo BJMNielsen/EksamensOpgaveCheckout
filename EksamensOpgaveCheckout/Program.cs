@@ -3,24 +3,27 @@
 using EksamensOpgaveCheckout;
 using EksamensOpgaveCheckout.Models;
 
-Console.WriteLine("Hej");
+Console.WriteLine("Velkommen til Supermarkedsterminalen. Begynd at scan varer:");
+
+BilligPrisBeregner billigPrisBeregner = new BilligPrisBeregner();
+DyrPrisBeregner dyrPrisBeregner = new DyrPrisBeregner();
 
 Scanner scanner = new Scanner();
-BilligPrisBeregner billigPrisBeregner = new BilligPrisBeregner();
-DyrPrisBeregner denDyre = new DyrPrisBeregner();
 
+// Først kører dette event metoden Indskannetvare i billig prisberegner, indtil vi "afslutter" scanningen.
+// Viser os den scannede varer og totalprisen indtil videre.
 scanner.ScannedItem += billigPrisBeregner.IndskannetVare;
-scanner.ScannedItem += denDyre.IndskannetVare;
-//scanner.ScannedItem += dyrePrisBeregner.BeregnPris
+// Herefter køre eventet Indskannetvare i den dyre prisberegner, der viser vores bon.
+scanner.ScannedItem += dyrPrisBeregner.IndskannetVare;
 
-scanner.Scan('A');
-scanner.Scan('B');
-scanner.Scan('#');
 
-/*
-S += scanner.Scan('A');
-scanner.ScannedItem += scanner.Scan('Z');
-List<Vare> scannedeVarer = scanner.ScannedeVarer;
-scanner.ScannedItem += billigPrisBeregner.BeregnPris(scannedeVarer);
 
-*/
+
+while (scanner.StillScanning)
+{
+    Console.Write("Skriv varekode der skal scannes: ");
+    var userInput = Console.ReadLine();
+    scanner.Scan(userInput.ToUpper().ToCharArray()[0]);
+}
+
+
